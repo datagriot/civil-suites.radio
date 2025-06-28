@@ -1,0 +1,183 @@
+import { useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Heart, Download, Play, Pause, SkipForward, SkipBack, Shuffle } from 'lucide-react';
+
+const tracks = [
+  {
+    title: 'BFM 090524 Everything',
+    artist: 'comaSIWA, Bilal, Keith Kenniff',
+    description: '',
+    liked: true,
+    time: '1:42',
+    image: 'https://via.placeholder.com/64?text=E',
+  },
+  {
+    title: 'BFM 021425 VALEN HILLS',
+    artist: 'perple, Bonobo, Tyla, The Gorillaz, Drake',
+    description: '',
+    liked: false,
+    time: '4:09',
+    image: 'https://via.placeholder.com/64?text=VH',
+  },
+  {
+    title: 'BFM 040625 NEXTYEAR',
+    artist: 'perple, Radiohead, Bilal',
+    description: '',
+    liked: false,
+    time: '5:02',
+    image: 'https://via.placeholder.com/64?text=NY',
+  },
+  {
+    title: 'BFM 112624 DELITE',
+    artist: 'perple, Hiatus Kaiyote',
+    description: '',
+    liked: false,
+    time: '2:38',
+    image: 'https://via.placeholder.com/64?text=D',
+  },
+  {
+    title: 'BFM 082224 WAYZING',
+    artist: 'comaSIWA, Black Coffee, Bob Marley & the Whailers, Frank Ocean, John Mayor',
+    description:
+      'Masterfully blending Black Coffee\'s rhythmic urgency, Frank Ocean\'s melodic sensibility, and Bob Marley\'s plaintive vocals, \"Wayzing\" explores the complexity of navigating separate paths while technically remaining together.',
+    liked: false,
+    time: '5:43',
+    image: 'https://via.placeholder.com/64?text=W',
+  },
+  {
+    title: 'BFM 021425 LUVSESSED',
+    artist: 'perple, Drake, Bilal',
+    description: '',
+    liked: false,
+    time: '3:15',
+    image: 'https://via.placeholder.com/64?text=L',
+  },
+  {
+    title: 'BFM 032025 CAUGHT',
+    artist: 'perple, Nancy Wilson, Beyoncé',
+    description: '',
+    liked: false,
+    time: '3:10',
+    image: 'https://via.placeholder.com/64?text=C',
+  },
+  {
+    title: 'BFM 032025 RAINS EMBRACE',
+    artist: 'perple, Jill Scott, RÜFÜS DU SOL, Beyoncé',
+    description: '',
+    liked: false,
+    time: '12:56',
+    image: 'https://via.placeholder.com/64?text=RE',
+  },
+  {
+    title: 'BFM 010625 POLYAMORE',
+    artist: 'perple, Sade, Nao, RÜFÜS DU SOL',
+    description: '',
+    liked: false,
+    time: '3:20',
+    image: 'https://via.placeholder.com/64?text=P',
+  },
+  {
+    title: 'BFM 033025 Sweet Summer Sunset',
+    artist: 'perple, Sampha, Mara TK, Fazer, Harold Melvin & the Blue Notes',
+    description: '',
+    liked: false,
+    time: '7:10',
+    image: 'https://via.placeholder.com/64?text=SSS',
+  },
+  {
+    title: 'BFM 121424 PSALM V',
+    artist: 'perple, Swizz Beatz, John Coltrane Quartet, comaSIWA',
+    description:
+      'The album concludes with a purely instrumental conversation between John Coltrane Quartet\'s spiritual explorations, Drake\'s contemporary drumming, and Flying Lotus’s subtle sonics.',
+    liked: true,
+    time: '7:00',
+    image: 'https://via.placeholder.com/64?text=PV',
+  },
+];
+
+export default function CivilSuitesApp() {
+  const [currentTrack, setCurrentTrack] = useState(tracks[0]);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <div className="bg-[#f3f1ea] min-h-screen font-mono text-[#2b2b2b]">
+      <header className="text-center py-10">
+        <h1 className="text-5xl font-bold tracking-wide text-purple-800">CIVIL SUITES</h1>
+        <p className="text-xl text-gray-600">the architectural unraveling of marriage.</p>
+      </header>
+
+      <main className="flex flex-col md:flex-row gap-6 px-6 md:px-20">
+        {/* Left Panel */}
+        <div className="md:w-2/3 space-y-6">
+          <Card className="p-6 bg-white shadow-md rounded-2xl">
+            <div className="flex gap-4 items-center">
+              <img
+                src={currentTrack.image}
+                alt={currentTrack.title}
+                className="w-24 h-24 rounded-xl object-cover"
+              />
+              <div>
+                <h2 className="text-2xl font-bold text-purple-700">{currentTrack.title}</h2>
+                <p className="text-gray-500 italic">{currentTrack.artist}</p>
+              </div>
+            </div>
+            <p className="mt-4 text-sm leading-relaxed text-gray-700">
+              {currentTrack.description || 'Click a track to view its details.'}
+            </p>
+          </Card>
+
+          {/* Controls */}
+          <div className="flex justify-center gap-6 items-center text-gray-800">
+            <Shuffle />
+            <SkipBack />
+            {isPlaying ? (
+              <Pause onClick={() => setIsPlaying(false)} className="w-8 h-8" />
+            ) : (
+              <Play onClick={() => setIsPlaying(true)} className="w-8 h-8" />
+            )}
+            <SkipForward />
+          </div>
+        </div>
+
+        {/* Playlist */}
+        <div className="md:w-1/3">
+          <Card className="bg-purple-100 p-4 rounded-2xl shadow-md">
+            <h3 className="text-xl font-bold mb-4 text-purple-700">Tracklist</h3>
+            <ul className="space-y-3">
+              {tracks.map((track, index) => (
+                <li
+                  key={index}
+                  className={`flex items-center justify-between p-2 rounded-lg cursor-pointer hover:bg-purple-200 transition ${
+                    currentTrack.title === track.title ? 'bg-purple-300' : ''
+                  }`}
+                  onClick={() => setCurrentTrack(track)}
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={track.image}
+                      alt={track.title}
+                      className="w-10 h-10 rounded object-cover"
+                    />
+                    <div>
+                      <div className="font-semibold text-sm">{track.title}</div>
+                      <div className="text-xs text-gray-600">{track.time}</div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Heart
+                      fill={track.liked ? 'red' : 'none'}
+                      stroke="currentColor"
+                      className="w-4 h-4"
+                    />
+                    <Download className="w-4 h-4" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+      </main>
+    </div>
+  );
+}
